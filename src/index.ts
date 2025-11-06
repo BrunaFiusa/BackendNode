@@ -1,3 +1,5 @@
 import app from "./app";
 
-app.listen(3000, () => console.log("Servidor está rodando"));
+const PORT = 3000;
+
+app.listen(PORT, () => console.log("Servidor está rodando"));
