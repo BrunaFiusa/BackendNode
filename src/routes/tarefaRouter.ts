@@ -1,12 +1,12 @@
 import { Router } from "express";
 import tarefaController from "../controllers/tarefaController";
 
-const router = Router();
+const rotaTarefa = Router();
 
-router.get("/", tarefaController.getTarefas);
-router.get("/:id", tarefaController.getTarefa);
-router.post("/", tarefaController.criarTarefa);
-router.put("/:id", tarefaController.atualizarTarefa);
-router.delete("/:id", tarefaController.deletarTarefa);
+rotaTarefa.get("/", tarefaController.getTarefas);
+rotaTarefa.get("/:id", tarefaController.getTarefa);
+rotaTarefa.post("/", tarefaController.criarTarefa);
+rotaTarefa.put("/:id", tarefaController.atualizarTarefa);
+rotaTarefa.delete("/:id", tarefaController.deletarTarefa);
 
-export default router;
+export default rotaTarefa;

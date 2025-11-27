@@ -1,23 +1,51 @@
 import { Request, Response, NextFunction } from "express";
+import tarefasRepository from "../repositories/tarefasRepository";
+import Tarefa from "../models/tarefa";
 
-function getTarefas(req:Request, res:Response, next:NextFunction){
-  res.send("Listar todas as tarefas.")
+async function getTarefas(req:Request, res:Response, next:NextFunction){
+  const result = await tarefasRepository.getAllTarefas()
+  res.json(result)
 }
 
-function getTarefa(req:Request, res:Response, next:NextFunction){
-  res.send("Listar uma tarefa.")
+async function getTarefa(req:Request, res:Response, next:NextFunction){
+  const {id} = req.params
+  const result = await tarefasRepository.getTarefa(parseInt(id))
+  const code = result ? 200 : 404
+  res.status(code).json(result)
 }
 
-function criarTarefa(req:Request, res:Response, next:NextFunction){
-  res.send("Criar uma tarefa.")
+async function criarTarefa(req:Request, res:Response, next:NextFunction){
+  const tarefa = req.body as Tarefa
+  try{
+    const result = await tarefasRepository.criarTarefa(tarefa)
+    return res.status(201).json(result)
+  }catch(error){
+    console.log("Erro ao criar", error)
+    return res.status(400).json({erro: "Dados incompletos"})
+  }
 }
 
-function atualizarTarefa(req:Request, res:Response, next:NextFunction){
-  res.send("Atualizar uma tarefa.")
+async function atualizarTarefa(req:Request, res:Response, next:NextFunction){
+  const {id} = req.params
+  const tarefa = req.body as Tarefa
+  try{
+    const result = await tarefasRepository.atualizarTarefa(parseInt(id), tarefa)
+    return res.status(201).json(result) 
+  }catch(error){
+    console.log("Erro ao atualizar", error)
+    return res.status(400).json({erro: "Dados incompletos"})
+  }
 }
 
-function deletarTarefa(req:Request, res:Response, next:NextFunction){
-  res.send("Deletar uma tarefa.")
+async function deletarTarefa(req:Request, res:Response, next:NextFunction){
+  const {id} = req.params
+  try{
+    const result = await tarefasRepository.deletarTarefa(parseInt(id))
+    return res.json(result)
+  }catch(error){
+    console.log("Erro ao deletar tarefa", error)
+    return res.status(400).json({erro: "Dados incompletos"})
+  }
 }
 
 export default {
