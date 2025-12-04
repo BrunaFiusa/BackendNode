@@ -35,7 +35,7 @@ test("POST: /tarefas = 201(Criar tarefa)", async() => {
     expect(content).toHaveProperty("descricao")
 })
 
-test("GET: /tarefas = 200", async() => {
+test("GET: /tarefas/:id = 200", async() => {
   const res = await fetch(`${URL_BASE}/${tarefa_id}`)
   expect(res.status).toBe(200);
 
