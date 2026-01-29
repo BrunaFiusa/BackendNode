@@ -5,10 +5,11 @@ const novo_login = {
   password: "123"
 }
 
-test("POST: api/login = 201(Criar tarefa)", async() => {
+test("POST: /api/login = 201(Criar tarefa)", async() => {
     const res = await fetch(URL_LOGIN, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(novo_login)
     }) 
+    expect(res.status).toBe(201);
 })
