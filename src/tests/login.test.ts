@@ -1,15 +1,15 @@
 const URL_LOGIN:string = "http://localhost:3000/api/login"
 
-const novo_login = {
-  email: "bru@gmail.com",
-  senha: "123"
-}
-
-test("POST: /api/login = 201(Criar tarefa)", async() => {
+test("POST: /api/login = 200", async() => {
     const res = await fetch(URL_LOGIN, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(novo_login)
-    }) 
+        body: JSON.stringify({
+            email: "bru@gmail.com",
+            senha: "2511"}
+        )
+    });
     expect(res.status).toBe(200);
-})
+    const json = await res.json()
+    console.log(json);
+});
