@@ -1,5 +1,6 @@
+import { QueryResult, ResultSetHeader } from 'mysql2';
 import {pool} from '../database/database';
-import { Login } from '../models/login';
+import { Login, dadosLogin } from '../models/login';
  
 async function validateEmail(email: string):Promise<Login|null> {
     const sql = `SELECT
@@ -16,5 +17,22 @@ async function validateEmail(email: string):Promise<Login|null> {
                 const [rows] = await pool.query<Login[]>(sql, [email]);
                 return rows.length ? rows[0] : null;               
 }
+
+async function cadastrarLogin(dadosLogin:dadosLogin):Promise<Login|null> {
+    const sql =  `INSERT INTO clientes (nome, cpf, telefone, email, senha) VALUES (?, ?, ?, ?, ?)`;
+
+    const [result] = await pool.query<ResultSetHeader>(sql, [
+        dadosLogin.nome,
+        dadosLogin.cpf,
+        dadosLogin.telefone,
+        dadosLogin.email,
+        dadosLogin.senha,
+    ]);
+    if (result.insertId) {
+        const resultado:Login = {id:result.insertId, ...dadosLogin}
+        return resultado
+    }
+    return null;    
+}
  
-export default { validateEmail } 
+export default { validateEmail, cadastrarLogin} 

@@ -4,5 +4,6 @@ import loginController from "../controllers/loginController";
 const rotaLogin = Router();
 
 rotaLogin.post("/", loginController.criarLogin);
+rotaLogin.post("/cadastro", loginController.cadastroCliente);
 
 export default rotaLogin; 

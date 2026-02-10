@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import loginRepository from "../repositories/loginRepository";
-import { validarSenha } from "../utils/senha";
+import { gerarSenha, validarSenha } from "../utils/senha";
 import { createJWT } from "../utils/jwt";
 
 async function criarLogin(req: Request, res: Response, next: NextFunction) {
@@ -35,4 +35,30 @@ async function criarLogin(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export default { criarLogin };
+async function cadastroCliente(req: Request, res: Response, next: NextFunction) {
+  const {nome, email, senha, cpf, telefone} = req.body;
+
+  if (!nome || !email || !senha || !cpf || !telefone) {
+    return res.status(400).json({erro: "Todos os campos são obrigatorios!"})
+  }
+  if (nome.trim()==="" || email.trim()==="" || senha.trim()==="" || cpf.trim()==="" || telefone.trim()===""){
+    return res.status(400).json({erro: "Os campos não podem ser vazios!"})
+  }
+
+  try {
+    const senhaHash = await gerarSenha(senha);
+    const dadosLogin = {nome, email, senha:senhaHash, cpf, telefone}
+    const result = loginRepository.cadastrarLogin(dadosLogin)
+
+    if (!result){throw new Error("Erro na criação do login")}
+    const {senha:_senha, cpf:_cpf, telefone:_tel, ...usuario} = result    
+    const token = createJWT(usuario)
+    return res.status(200).json(token);
+  } 
+  catch (error) {
+    console.log("Error", error)
+    return res.status(400).json({erro: "Erro ao criar Login"})
+  }
+}
+
+export default { criarLogin, cadastroCliente };
