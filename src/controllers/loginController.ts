@@ -51,7 +51,7 @@ async function cadastroCliente(req: Request, res: Response, next: NextFunction) 
     const result = loginRepository.cadastrarLogin(dadosLogin)
 
     if (!result){throw new Error("Erro na criação do login")}
-    const {senha:_senha, cpf:_cpf, telefone:_tel, ...usuario} = result    
+    const { senha:_, ...usuario } = result    
     const token = createJWT(usuario)
     return res.status(200).json(token);
   } 

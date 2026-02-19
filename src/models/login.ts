@@ -11,7 +11,7 @@ export type Login =  RowDataPacket &{
 export type dadosLogin = {
     nome: string;
     cpf: string;
-    telefone: string;
     email: string;
     senha: string;
+    telefone: string;
 }
