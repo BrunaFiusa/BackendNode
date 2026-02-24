@@ -31,3 +31,15 @@ test("POST / create = 200", async () => {
     const token = await res.json();
     console.log(token)
 });
+
+test("POST / login(sem senha) = 400", async () => {
+    const res = await fetch(URL_LOGIN, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            email: "teste@email.com",
+            senha: ""}
+        )
+    });
+    expect(res.status).toBe(400);
+});

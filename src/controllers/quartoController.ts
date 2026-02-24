@@ -1,45 +1,28 @@
-import { Request, Response, NextFunction } from "express";
-import quartoRepository from "../repositories/quartoRepository";
-import { Quartos } from "../models/quarto";
- 
-async function quartoDisp(req: Request, res: Response, next: NextFunction) {
- 
-    console.log("Requisição recebida para buscar quartos disponíveis:");
- 
-    const { inicio, fim, qtdPessoas } = req.body;
- 
-    if (!inicio || !fim || !qtdPessoas) {
-        return res.status(401).json({ erro: "Todos os campos são obrigatórios" });
+import {Request, Response, NextFunction} from "express"
+import quartosRepository from "../repositories/quartoRepository";
+
+async function disponiveis(req:Request, res:Response, next:NextFunction) {
+    const {dataInicio, dataFim, quantidade} = req.body;
+
+    if (!dataInicio || !dataFim || !quantidade){
+        return res.status(400).json({erro:"Preencha os campos para consulta"})
     }
- 
-    if (inicio.trim() === "" || fim.trim() === "" || qtdPessoas.toString().trim() === "") {
-        return res.status(402).json({ erro: "Campos não podem ser vazios" });
-    }
- 
+
+    const dados = {dataInicio, dataFim, quantidade}
     try {
-        const rooms: Quartos[] = await quartoRepository.quartosDisp(inicio, fim, qtdPessoas);
- 
-        if (rooms.length === 0) {
-            return res.status(403).json({ mensagem: "Nenhum quarto disponível encontrado." });
+        let quartos = await quartosRepository.disponiveis(dados)
+        if (!quartos){ throw new Error("Erro ao buscar os quartos")}
+
+        for (let q of quartos){
+            const fotos = await quartosRepository.buscarFotoPorQuartoId(q.id);
+            q.fotos = fotos
         }
- 
-        const formattedRooms = rooms.map(room => {
-            return {
-                id: room.id,
-                nome: room.nome,
-                capacidadeTotal: (room.qtd_cama_casal * 2) + room.qtd_cama_solteiro,
-                preco: room.preco
-            };
-        });
- 
-        return res.status(200).json(formattedRooms);
- 
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ erro: "Erro interno no servidor" });
-    }
+        res.status(200).json(quartos);
+    } 
+    catch (error) {
+        console.log(error)
+        return res.status(400).json({erro:"Erro ao buscar os quartos"})
+    }  
 }
- 
-export default {
-  quartoDisp
-}
+
+export default{ disponiveis }
