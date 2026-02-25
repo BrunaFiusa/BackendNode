@@ -1,13 +1,16 @@
 import {Request, Response, NextFunction} from "express"
 import quartosRepository from "../repositories/quartoRepository";
+import {corrigirDataHora} from "../utils/datahora";
 
 async function disponiveis(req:Request, res:Response, next:NextFunction) {
-    const {dataInicio, dataFim, quantidade} = req.body;
+    let {dataInicio, dataFim, quantidade} = req.body;
 
     if (!dataInicio || !dataFim || !quantidade){
         return res.status(400).json({erro:"Preencha os campos para consulta"})
     }
 
+    dataInicio = await corrigirDataHora(dataInicio, 14)
+    dataFim = await corrigirDataHora(dataFim, 12)
     const dados = {dataInicio, dataFim, quantidade}
     try {
         let quartos = await quartosRepository.disponiveis(dados)

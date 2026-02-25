@@ -1,11 +1,6 @@
 import {Request, Response, NextFunction} from "express"
 import reservaRespository from "../repositories/reservaRepository";
-
-async function corrigirDataHora(data:string, hora:number) {
-    let novaData = new Date(data)
-    novaData.setHours(hora, 0, 0, 0)
-    return novaData.toLocaleString("pt-BR", { timeZone: "UTC" })
-}
+import {corrigirDataHora} from "../utils/datahora";
 
 async function criarPedido(req:Request, res:Response, next:NextFunction) {
     const token = req.payload;
