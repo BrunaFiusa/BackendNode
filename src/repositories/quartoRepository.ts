@@ -2,7 +2,7 @@ import {pool} from "../database/database"
 import { RowDataPacket } from "mysql2";
 import { QuartoReserva, Quartos } from "../models/quarto";
 
-async function disponiveis(pedido:QuartoReserva):Promise<Quartos|null>{
+async function disponiveis(pedido:QuartoReserva):Promise<Quartos[]|null>{
     const sql = `SELECT *
         FROM quartos q
         WHERE q.disponivel = 1
