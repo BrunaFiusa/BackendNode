@@ -1,10 +1,10 @@
 test("POST: /api/quartosDisponiveis = 200", async()=>{
-    const resp = await fetch("http://localhost:3000/api/quartosDisponiveis",{
+    const resp = await fetch("https://backend-node-smoky-nu.vercel.app/api/quartosDisponiveis",{
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            dataInicio:"11/02/2026",
-            dataFim:"12/02/2026",
+            dataInicio:"2026-11-02",
+            dataFim:"2026-11-05",
             quantidade:3
         })
     });

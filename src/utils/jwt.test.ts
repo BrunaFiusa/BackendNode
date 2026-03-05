@@ -1,6 +1,6 @@
 import { verifyJWT } from "../utils/jwt"
 
-const BASE_URL = "http://localhost:3000/jwt"
+const BASE_URL = "https://backend-node-smoky-nu.vercel.app/jwt"
 
 test("GET: /jwt = 200", async()=> {
   const resp = await fetch(BASE_URL)

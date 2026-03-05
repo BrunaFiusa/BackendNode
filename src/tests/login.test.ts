@@ -1,4 +1,4 @@
-const URL_LOGIN:string = "http://localhost:3000/api/login"
+const URL_LOGIN:string = "https://backend-node-smoky-nu.vercel.app/api/login"
 
 
 test("POST: / login = 200", async() => {
@@ -20,11 +20,11 @@ test("POST / create = 200", async () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            nome: "nomeTeste",
-            email: "teste@email.com",
+            nome: "Bruna",
+            email: "bruna-.rodrigues@email.com",
             senha: "senha123",
-            telefone: "157070-7070",
-            cpf:"123456789-55"
+            telefone: "157070-73070",
+            cpf:"1234567389-55"
         })
     });
     expect(res.status).toBe(200);

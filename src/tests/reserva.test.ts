@@ -1,6 +1,6 @@
 test("POST: /api/reserva = 200", async()=>{
     // realizar login
-    const res = await fetch("http://localhost:3000/api/login", {
+    const res = await fetch("https://backend-node-smoky-nu.vercel.app/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -12,7 +12,7 @@ test("POST: /api/reserva = 200", async()=>{
     const token = await res.json()
 
     // realizar reserva
-    const resp = await fetch("http://localhost:3000/api/reserva",{
+    const resp = await fetch("https://backend-node-smoky-nu.vercel.app/api/reserva",{
         method: "POST",
         headers: { 
             "Content-Type": "application/json",
